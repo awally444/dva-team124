@@ -1,0 +1,3 @@
+DOC - a folder called DOC (short for “documentation”) containing:
+        teamXXXreport.pdf - Your report writeup in PDF format; can be created using any software, e.g., latex, Word.
+        teamXXXposter.pdf - Your final poster.
