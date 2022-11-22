@@ -1,17 +1,22 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import ElasticNet, LassoCV, Lasso
-from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LassoCV, Lasso
 
 class OpioidAnalysis:
-    def __init__(self, param: str) -> None:
-        self.state_lst = ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID',
-        'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC',
-        'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD',
-        'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
+    def __init__(self, param: str, all_years: bool) -> None:
+        self.state_map = {'AK': 'Alaska', 'AL': 'Alabama', 'AR': 'Arkansas', 'AZ': 'Arizona', 
+                          'CA': 'California', 'CO': 'Colorado', 'CT': 'Connecticut', 'DC': 'Washington D.C.', 
+                          'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia', 'HI': 'Hawaii', 'IA': 'Iowa', 'ID': 'Idaho',
+                          'IL': 'Illinois', 'IN': 'Indiana', 'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'MA': 'Massachusetts', 
+                          'MD': 'Maryland', 'ME': 'Maine', 'MI': 'Michigan', 'MN': 'Minnesota', 'MO': 'Missouri', 'MS': 'Mississippi', 
+                          'MT': 'Montana', 'NC': 'North Carolina', 'ND': 'North Dakota', 'NE': 'Nebraska', 'NH': 'New Hampshire', 'NJ': 'New Jersey', 
+                          'NM': 'New Mexico', 'NV': 'Nevada', 'NY': 'New York', 'OH': 'Ohio', 'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 
+                          'RI': 'Rhode Island', 'SC': 'South Carolina', 'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 
+                          'VA': 'Virginia', 'VT': 'Vermont', 'WA': 'Washington', 'WI': 'Wisconsin', 'WV': 'West Virginia', 'WY': 'Wyoming'}
         self.results = []
         self.param = param
         self.model = None
+        self.all_years = all_years
 
     def get_full_df(self, path: str) -> pd.DataFrame:
         """
@@ -44,7 +49,7 @@ class OpioidAnalysis:
         state_df: -> pandas dataframe filtered for a single state with unnecessary columns removed 
         """
         
-        assert state in self.state_lst, "Value Error: state abbreviation provided not valid"
+        assert state in self.state_map.keys(), "Value Error: state abbreviation provided not valid"
         # filter df to single state
         state_df = df.loc[df['F12424'] == state]
         return state_df
@@ -107,7 +112,7 @@ class OpioidAnalysis:
         self.model = model
         self.model.fit(X, Y)
 
-    def write_results(self, state: str, year: int):
+    def write_results(self, state: str, year=None):
         """
         function to write to results property
 
@@ -117,10 +122,16 @@ class OpioidAnalysis:
         year: -> year of analysis i.e. 2009 
         """
         features = zip(self.model.feature_names_in_, list(self.model.coef_))
-        features_df = {'State': state, 'Year': year}
-        for f,c in features:
-            features_df[f] = c
-        self.results.append(features_df)
+        if self.all_years:
+            features_df = {'State': state}
+            for f,c in features:
+                features_df[f] = c
+            self.results.append(features_df)
+        else:
+            features_df = {'State': state, 'Year': year}
+            for f,c in features:
+                features_df[f] = c
+            self.results.append(features_df)
 
     def output_results(self, path: str):
         """
@@ -130,13 +141,64 @@ class OpioidAnalysis:
         -----
         path: -> path to directory where file will be saved
         """
+        # create pandas df and create state name column
         output_df = pd.DataFrame(self.results)
-        path = path + f'\{self.param}_results.csv'
-        output_df.to_csv(path)    
+        output_df.rename(columns={'State': 'State Abbv'}, inplace=True)
+        output_df['State'] = output_df.apply(
+            lambda x: self.state_map[x['State Abbv']], axis=1
+        )
+        # write out full table, with each column a features
+        if self.all_years:
+            output_df.to_csv(path + f'\\{self.param}_results_all_years.csv')
+            # melt df for easier analysis
+            ids = ['State Abbv', 'State']
+            vals = [x for x in output_df.columns if x not in ids]
+            output_df_melted = pd.melt(output_df, id_vars=ids, value_vars=vals)
+            output_df_melted.to_csv(path + f'\\{self.param}_melted_results_all_years.csv')    
+        else:
+            output_df.to_csv(path + f'\\{self.param}_results.csv')
+            # melt df for easier analysis
+            ids = ['State Abbv', 'State', 'Year']
+            vals = [x for x in output_df.columns if x not in ids]
+            output_df_melted = pd.melt(output_df, id_vars=ids, value_vars=vals)
+            output_df_melted.to_csv(path + f'\\{self.param}_melted_results.csv')    
 
-def run_analysis(param: str):
+def analysis(param: str, all_years: bool):
+    """
+    function to run analyis
+
+    input
+    -----
+    param: -> feature from dataset to predict
+    all_years: -> if true, analysis will group all years together, else will perform regression for each year independently
+    """
+    def run_analysis(df: pd.DataFrame, state: str):
+        """
+        helper function to analysis method
+        """
+        # filter df to state
+        state_df = op_analysis.get_state_df(df=df, state=state)
+        # define columns to drop
+        drop_cols = ['YR', 'F00002', 'F12424', 'F00010' ,'F04437', 'PILL_QUART', 'ORD_DEATHS_NOIMP', 'ORD_CDR_NOIMP', 'CDR_NOIMP', 'CANCER_DEATHS_NOIMP', 'CANCER_CDR_NOIMP']
+        # drop unnecessary columns
+        filtered_state_df = op_analysis.filter_df(df=state_df, cols=drop_cols)
+        # standardize data
+        standardised_df = op_analysis.standardise_df(df=filtered_state_df)
+        if st != 'DC': # DC only has one county
+            # run lasso cv
+            if len(standardised_df) < 5:
+                op_analysis.run_lasso(df = standardised_df, model=LassoCV(max_iter = 5000, eps=5e-2, cv = 3))
+            else:
+                op_analysis.run_lasso(df = standardised_df, model=LassoCV(max_iter = 5000, eps=5e-2, cv = 5))
+        else:
+            op_analysis.run_lasso(df = standardised_df, model=Lasso(alpha=0.5))
+        # add features to output
+        if op_analysis.all_years:
+            op_analysis.write_results(state=st)
+        else:
+            op_analysis.write_results(state=st, year=yr)
     # instantiate analysis class
-    op_analysis = OpioidAnalysis(param=param)
+    op_analysis = OpioidAnalysis(param=param, all_years=all_years)
     
     # define path to data and import
     input_file_path = '.\Datasets\\Analytic File 3-31-21 DIB.csv'
@@ -148,45 +210,21 @@ def run_analysis(param: str):
 
     # for each state
     for st in states:
-        if st != 'DC': # DC only has one county
-            # filter df to state
-            state_df = op_analysis.get_state_df(df=full_df, state=st)
+        if all_years:
+            print(f'evaluating state {st} for all years for independent param {op_analysis.param}')
+            run_analysis(df=full_df, state=st)
+        else:
             # for each year
             for yr in year:
                 print(f'evaluating state {st} in year {yr} for independent param {op_analysis.param}')
                 # filter to single year
-                state_yr_df = state_df[state_df['YR'] == yr]
-                # define columns to drop
-                drop_cols = ['YR', 'F00002', 'F12424', 'F00010' ,'F04437', 'PILL_QUART', 'ORD_DEATHS_NOIMP', 'ORD_CDR_NOIMP', 'CDR_NOIMP', 'CANCER_DEATHS_NOIMP', 'CANCER_CDR_NOIMP']
-                # drop unnecessary columns
-                filtered_state_df = op_analysis.filter_df(df=state_yr_df, cols=drop_cols)
-                # standardize data
-                standardised_df = op_analysis.standardise_df(df=filtered_state_df)
-                # run lasso cv
-                if len(standardised_df) < 5:
-                    op_analysis.run_lasso(df = standardised_df, model=LassoCV(max_iter = 5000, eps=5e-2, cv = 3))
-                else:
-                    op_analysis.run_lasso(df = standardised_df, model=LassoCV(max_iter = 5000, eps=5e-2, cv = 5))         
-                # add features to output
-                op_analysis.write_results(state=st, year=yr)
-        else: # for DC
-             for yr in year:
-                print(f'evaluating state {st} in year {yr} for independent param {op_analysis.param}')
-                # filter to single year
-                state_yr_df = state_df[state_df['YR'] == yr]
-                # define columns to drop
-                drop_cols = ['YR', 'F00002', 'F12424', 'F00010' ,'F04437', 'PILL_QUART', 'ORD_DEATHS_NOIMP', 'ORD_CDR_NOIMP', 'CDR_NOIMP', 'CANCER_DEATHS_NOIMP', 'CANCER_CDR_NOIMP']
-                # drop unnecessary columns
-                filtered_state_df = op_analysis.filter_df(df=state_yr_df, cols=drop_cols)
-                # standardize data
-                standardised_df = op_analysis.standardise_df(df=filtered_state_df)
-                # run lasso cv
-                op_analysis.run_lasso(df = standardised_df, model=Lasso(alpha=0.1))       
-                # add features to output
-                op_analysis.write_results(state=st, year=yr)                                               
+                yr_df = full_df[full_df['YR'] == yr]
+                run_analysis(df=yr_df, state=st)                                        
+    
     # write to csv     
-    op_analysis.output_results(path='.\Analysis\\results')
+    op_analysis.output_results(path='.\\Analysis\\results')
 
 if __name__ == "__main__":
-    run_analysis(param='PCPV')
-    run_analysis(param='ORD_DEATHS')
+    for p in ['PCPV', 'ORD_DEATHS']:
+        analysis(param=p, all_years = True)
+        analysis(param=p, all_years = False)
