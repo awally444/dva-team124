@@ -20,7 +20,7 @@ class OpioidAnalysis:
 
     def get_full_df(self, path: str) -> pd.DataFrame:
         """
-        function to import data from .csv file and return pandas df
+        function to import data from .csv file and return pandas dfcon
 
         inputs
         -----
@@ -180,6 +180,10 @@ def analysis(param: str, all_years: bool):
         state_df = op_analysis.get_state_df(df=df, state=state)
         # define columns to drop
         drop_cols = ['YR', 'F00002', 'F12424', 'F00010' ,'F04437', 'PILL_QUART', 'ORD_DEATHS_NOIMP', 'ORD_CDR_NOIMP', 'CDR_NOIMP', 'CANCER_DEATHS_NOIMP', 'CANCER_CDR_NOIMP']
+        drop_cols.extend(['F04538', 'F04542', 'ORD_CDR'])
+        if param == 'PCPV':
+            drop_cols.append('ORD_DEATHS')  # drop ord deaths as factor
+            
         # drop unnecessary columns
         filtered_state_df = op_analysis.filter_df(df=state_df, cols=drop_cols)
         # standardize data
@@ -201,7 +205,8 @@ def analysis(param: str, all_years: bool):
     op_analysis = OpioidAnalysis(param=param, all_years=all_years)
     
     # define path to data and import
-    input_file_path = '.\Datasets\\Analytic File 3-31-21 DIB.csv'
+    # input_file_path = '.\Datasets\\Analytic File 3-31-21 DIB.csv'
+    input_file_path = '../Datasets/Analytic File 3-31-21 DIB.csv'
     full_df = op_analysis.get_full_df(path=input_file_path)
     
     # get list of states
