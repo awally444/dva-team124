@@ -17,6 +17,7 @@ class OpioidAnalysis:
         self.param = param
         self.model = None
         self.all_years = all_years
+        self.score = None
 
     def get_full_df(self, path: str) -> pd.DataFrame:
         """
@@ -111,6 +112,7 @@ class OpioidAnalysis:
         # run lasso cv
         self.model = model
         self.model.fit(X, Y)
+        self.score = self.model.score(X, Y)
 
     def write_results(self, state: str, year=None):
         """
@@ -126,6 +128,7 @@ class OpioidAnalysis:
             features_df = {'State': state}
             for f,c in features:
                 features_df[f] = c
+            features_df["R2"] = self.score
             self.results.append(features_df)
         else:
             features_df = {'State': state, 'Year': year}
@@ -227,7 +230,8 @@ def analysis(param: str, all_years: bool):
                 run_analysis(df=yr_df, state=st)                                        
     
     # write to csv     
-    op_analysis.output_results(path='.\\Analysis\\results')
+    # op_analysis.output_results(path='.\\Analysis\\results')
+    op_analysis.output_results(path='../Analysis/results')   # mac path
 
 if __name__ == "__main__":
     for p in ['PCPV', 'ORD_DEATHS']:
