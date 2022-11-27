@@ -208,8 +208,8 @@ def analysis(param: str, all_years: bool):
     op_analysis = OpioidAnalysis(param=param, all_years=all_years)
     
     # define path to data and import
-    # input_file_path = '.\Datasets\\Analytic File 3-31-21 DIB.csv'
-    input_file_path = '../Datasets/Analytic File 3-31-21 DIB.csv'
+    input_file_path = '.\Datasets\\Analytic File 3-31-21 DIB.csv'
+    # input_file_path = '../Datasets/Analytic File 3-31-21 DIB.csv'
     full_df = op_analysis.get_full_df(path=input_file_path)
     
     # get list of states
@@ -230,8 +230,8 @@ def analysis(param: str, all_years: bool):
                 run_analysis(df=yr_df, state=st)                                        
     
     # write to csv     
-    # op_analysis.output_results(path='.\\Analysis\\results')
-    op_analysis.output_results(path='../Analysis/results')   # mac path
+    op_analysis.output_results(path='.\\Analysis\\results')
+    # op_analysis.output_results(path='../Analysis/results')   # mac path
 
 if __name__ == "__main__":
     for p in ['PCPV', 'ORD_DEATHS']:
