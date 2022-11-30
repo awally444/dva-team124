@@ -1,24 +1,19 @@
-(
-    [10%] Team’s contact person submits one zip file called teamXXXfinal.zip, where XXX is the team number. 
-The teamXXXfinal.zip will contain the following 3 components:
-README.txt - a concise, short README.txt file, corresponding to the "user guide" containing (description, installation, execution and demo video)
-DOC - a folder called DOC (short for “documentation”) containing:
-        teamXXXreport.pdf - Your report writeup in PDF format; can be created using any software, e.g., latex, Word.
-        teamXXXposter.pdf - Your final poster.
-CODE - All your code should be added here. Make sure that your package includes only the absolutely necessary set of files.
-)
+DESCRIPTION
+The code found in this directory can be run locally to recreate the analysis completed as part of the project. The directory contains the following files:
+ - analysis.py -> python file responsible for creating linear regression models for each state using LASSO regression. The file is currently configured to perform analysis on Per-Capita Opioid Pill Volume (PCPV) and Opioid Related Deaths (ORD_DEATHS)
+ - featurelabels.csv -> csv file mapping feature label codes to descriptions (e.g. F11984 -> Population estimate)
 
-CSE 6242 - Data and Visual Analytics
-TEAM 124 FINAL SUBMISSION:
+INSTALLATION
+The file 'analysis.py' requires the following libraries installed:
+ - pandas
+ - sklearn
+Both can be installed using pip in the command prompt, 'pip install pandas sklearn'
 
-DESCRIPTION: (Describe the package in a few paragraphs)
+Before running the analysis, the dataset 'Analytic File 3-31-21 DIB.csv' should be downloaded from https://data.mendeley.com/datasets/dwfgxrh7tn/6 and placed in the 'CODE' directory
 
-INSTALLATION: (How to install and setup your code)
+EXECUTION
+Once the required libraries are installed and the data file placed in the 'CODE' directory, the 'analysis.py' file can be executed to perform the analysis, which can be done in the command prompt via 'python .\CODE\\analysis.py'
 
-EXECUTION: (How to run a demo on your code)
+As the execution is ongoing, messages will be printed displaying the state currently under evaluation and for what dependent feature, e.g. 'evaluating state AL for all years for parameter PCPV'. 
 
-DEMO VIDEO: (Optional, but recommended; Include the URL of a 1-minute *unlisted* YouTube video in this txt file.) 
-        (The video would show how to install and execute your system/tool/approach (e.g, from typing the first command to compile, to system launching, and running some examples). 
-        Feel free to speed up the video if needed (e.g., remove less relevant video segments). This video is optional (i.e., submitting a video does not increase scores; not submitting one does not decrease scores).
-        However, we recommend teams to try and create such a video, because making the video helps teams better think through what they may want to write in the README.txt, 
-        and generally how they want to "sell" their work.)
+Once the analysis is complete, the results will be available within .csv files 'PCPV_results_all_years.csv' and 'ORD_DEATHS_results_all_years.csv'. The analysis is completed based on combining all years worth of data into one, denoted by the '...all_years' in the file name. Other features can be used as the dependent variable by changing the list on line 227 in analysis.py

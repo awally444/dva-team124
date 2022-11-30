@@ -1,0 +1,156 @@
+Variable,LabelDefinition
+YR,Calendar Year
+F00002,Federal Income Processing System (FIPS) code - unique 5-digit county identifier
+F12424,State name abbreviation
+F00010,County name
+F04437,County name with state abberviation
+F13874,Total area 
+F09721,Total land area 
+F09787,Healthcare Professional Shortage Area (Primary Care) 
+HPSA_WHOLE,Healthcare professional shortage area - whole county 
+HPSA_PART,Healthcare professional shortage area - partial county 
+F00020,USDA Rural-Urban Continuum Code 
+RURAL,Rural indicator 
+METRO,Metropolitan indicator 
+NONMETRO,Nonmetropolitan indicator 
+F14642,# of nurse practitioners with National Provider Identifiers (NPI) 
+F13214,# of home health agencies 
+F13220,# of hospices 
+F11984,Population estimate 
+F04538,% Black 
+F04542,% Hispanic 
+F11396,Veteran population estimate 
+F13191,# eligible for Medicare 
+F06795,Unemployment rate for ages 16+ 
+F04820,# of medical doctors male  
+F04821,# of medical doctors female  
+F04904,# of medical doctors under age 35 
+F04905,# of medical doctors aged 35-44 
+F04906,# of medical doctors aged 45-54 
+F04907,# of medical doctors aged 55-64 
+F12016,# of medical doctors aged 65-74 
+F12017,# of medical doctors aged 75+ 
+F04916,# of medical specialists under age 35 
+F04917,# of medical specialists aged 35-44 
+F04918,# of medical specialists aged 45-54 
+F04919,# of medical specialists aged 55-64 
+F12034,# of medical specialists aged 65-74 
+F12035,# of medical specialists aged 75+ 
+F10498,# of dentists under age 35 
+F11318,# of dentists aged 35-44 
+F11319,# of dentists aged 45-54 
+F13176,# of dentists aged 55-64 
+F10505,# of dentists aged 65+ 
+F08921,# of hospital beds 
+F08922,# of short-term general hospital beds 
+F08923,# of short-term non-general hospital beds 
+F08924,# of long-term hospital beds 
+F14045,# of licensed hospital-based nursing home beds 
+F09545,# of inpatient days including homes and hospitals  
+F09566,# of outpatient visits in short-term general hospitals 
+F09567,# of outpatient visits in short-term non-general hospitals 
+F09568,# of outpatient visits in long-term hospitals 
+F09571,# of outpatient visits in Veterans Affairs hospitals 
+OP_VISITS,# of outpatient visits total  
+F15297,Actual per capita Medicare cost 
+F13906,Total male population estimate 
+F13907,Total female population estimate 
+F13908,Total Caucasian male population estimate 
+F13909,Total Caucasian female population estimate 
+F13910,Total Black male population estimate 
+F13911,Total Black female population estimate 
+F13914,Total Asian male population estimate 
+F13915,Total Asian Female population estimate 
+F13920,Total Hispanic male population estimate 
+F13921,Total Hispanic female population estimate 
+F15549,# of Medicare enrollees 
+F12558,# of deaths any cause  
+F09781,Per capita personal income 
+F13226,Median household income 
+F13321,% in poverty 
+F15474,% under age 65 without health insurance 
+F14482,% aged 25+ with 4+ years of college 
+F14587,% employed in manufacturing 
+F14206,# dually eligible for Medicare & Medicaid 
+F06712,# of males aged 20-24 
+F06713,# of females aged 20-24 
+F06714,# of males aged 25-29 
+F06715,# of females aged 25-29 
+F06716,# of males aged 30-34 
+F06717,# of females aged 30-34 
+F06718,# of males aged 35-44 
+F06719,# of females aged 35-44 
+F06720,# of males aged 45-54 
+F06721,# of females aged 45-54 
+F06722,# of males aged 55-59 
+F06723,# of females aged 55-59 
+F06724,# of males aged 60-64 
+F06725,# of females aged 60-64 
+F06726,# of males aged 65-74 
+F06727,# of females aged 65-74 
+F11640,# of males aged 75-84 
+F11641,# of females aged 75-84 
+F11642,# of males aged 85+ 
+F11643,# of females aged 85+ 
+F13483,Median age 
+N_BLACK,Total Black population 
+N_ASIAN,Total Asian population 
+N_HISP,Total Hispanic population 
+OP_PC,Outpatient visits per capita 
+IP_PC,Inpatient days per capita 
+PCT_MEN,% male 
+PCT_WHITE,% Caucasian 
+PCT_BLACK,% Black 
+PCT_ASIAN,% Asian 
+PCT_OTHER,% other race 
+PCT_HISP,% Hispanic 
+PCT_MEDICARE,% eligible for Medicare 
+ARF_CDR,Crude annual death rate all cause  
+POP_DENSITY,Population density in hundreds  
+PCT_DUALS,% dual-eligible for Medicare & Medicaid 
+NP_PC,Nurse practitioners per 100000 residents  
+PCT_25T34,% aged 25 to 34 
+PCT_35T44,% aged 35 to 44 
+PCT_45T54,% aged 45 to 54 
+PCT_55T64,% aged 55 to 64 
+PCT_65T74,% aged 65 to 74 
+PCT_75T84,% aged 75 to 84 
+PCT_85PLUS,% aged 85+ 
+PCT_25T44,% aged 25 to 44 
+PCT_45T64,% aged 45 to 64 
+PCT_65PLUS,% aged 65+ 
+PCT_VETS,% of population who are veterans 
+MD_LT35_PC,Medical doctors aged <35 per 100000 residents  
+MD_35T44_PC,Medical doctors aged 35 to 44 per 100000 residents  
+MD_45T54_PC,Medical doctors aged 45 to 54 per 100000 residents  
+MD_55T64_PC,Medical doctors aged 55 to 64 per 100000 residents  
+MD_65T74_PC,Medical doctors aged 65 to 74 per 100000 residents  
+MD_75PLUS_PC,Medical doctors aged 75+ per 100000 residents  
+MD_PC,Medical doctors per 100000 residents  
+SPEC_LT35_PC,Medical specialists aged <35 per 100000 residents  
+SPEC_35T44_PC,Medical specialists aged 35 to 44 per 100000 residents  
+SPEC_45T54_PC,Medical specialists aged 45 to 54 per 100000 residents  
+SPEC_55T64_PC,Medical specialists aged 55 to 64 per 100000 residents  
+SPEC_65T74_PC,Medical specialists aged 65 to 74 per 100000 residents  
+SPEC_75PLUS_PC,Medical specialists aged 75+ per 100000 residents  
+SPEC_PC,Specialists per 100000 residents  
+DENTISTS_LT35_PC,Dentists aged <35 per 100000 residents  
+DENTISTS_35T44_PC,Dentists aged 35 to 44 per 100000 residents  
+DENTISTS_45T54_PC,Dentists aged 45 to 54 per 100000 residents  
+DENTISTS_55T64_PC,Dentists aged 55 to 64 per 100000 residents  
+DENTISTS_65PLUS_PC,Dentists aged 65+ per 100000 residents  
+ORD_DEATHS,# of opioid-related deaths - imputed  
+ORD_DEATHS_NOIMP,# of opioid-related deaths - non-imputed  
+ORD_CDR,Crude opiod-related death rate - imputed  
+ORD_CDR_NOIMP,Crude opiod-related death rate - non-imputed  
+CANCER_DEATHS,# of cancer-related deaths - imputed  
+CANCER_DEATHS_NOIMP,# of cancer-related deaths - non-imputed  
+CANCER_CDR,Crude cancer-related death rate - imputed  
+CANCER_CDR_NOIMP,Crude cancer-related death rate - non-imputed  
+SHIP_COUNT,Total number of opioid shipments 
+DOSAGE_UNIT,Total number of opioid pills distributed 
+PCPV,Per capita opioid pill volume 
+PILL_QUART,Per capita opioid pill volume - quartiles  
+EXP_EARLY,Early state Medicaid expansion status 
+NP_RX,Nurse practitioner prescribing authority 
+PDMP_REQ_CHECK,Presription drug monitoring programs (PDMP) 
